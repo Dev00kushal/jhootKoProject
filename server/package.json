@@ -6,9 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon ./dist/index.js",
-    "dev": "concurrently \"npm run watch\" \"npm run server\"",
+    "dev": "concurrently \"npm run watch\" \"npm run server\" \"npm run watch-views\"",
     "watch": "tsc -w",
-    "build": "tsc"
+    "build": "tsc && npm run copy-files",
+    "copy-files" : "copyfiles -u 1 \"src/views/**/*\" \"dist/\"",
+    "watch-views" : "nodemon --watch src/views -e ejs -x \"npm run copy-files\""
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "copyfiles": "^2.4.1",
     "nodemon": "^3.1.7",
     "typescript": "^5.6.2"
   }
