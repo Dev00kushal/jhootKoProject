@@ -1,8 +1,9 @@
 import "dotenv/config";
+import ejs from "ejs";
 import express, { Application, Request, Response } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import { sendEmail } from "./config/mail.js";
 const app: Application = express();
 const PORT = process.env.PORT || 7000;
 
@@ -16,8 +17,10 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 app.set("views",path.resolve(__dirname,"./views"));
 
-app.get("/", (req: Request, res: Response): any => {
-  return res.render("welcome");
+app.get("/",async (req: Request, res: Response): Promise<any> => {
+  const html =  await ejs.renderFile(__dirname + `/views/emails/email.ejs`,{name:"Kushal Chaulagain"});
+  await sendEmail("nayeje3679@scarden.com","Testing smtp",html);
+  return res.json({msg:"Email send sucessfulyy"});
 });
 
 app.listen(PORT, () => {
